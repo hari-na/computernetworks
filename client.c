@@ -26,33 +26,30 @@ int main(){
 
   connect(sock, (struct sockaddr*)&addr, sizeof(addr));
   while(1){
+	// Agent ID
 	  bzero(buffer, 1024);
 	  recv(sock, buffer, sizeof(buffer), 0);
 	  printf("Server: %s\n", buffer);
-
+	// Give Agent ID
 	  bzero(buffer, 1024);
 	  char name[20];
 	  scanf("%s", name);
 	  strcpy(buffer, name);
 	  printf("Client: %s\n", buffer);
 	  send(sock, buffer, strlen(buffer), 0);
-
+	// How many seats?
 	  bzero(buffer, 1024);
 	  recv(sock, buffer, sizeof(buffer), 0);
 	  printf("Server: %s\n", buffer);
-
+	// Give number of seats
 	  int numOfSeats;
 	  scanf("%d", &numOfSeats);
 	  printf("Client: %s\n", buffer);
 	  send(sock, &numOfSeats, sizeof(int), 0);
-
+	// Price of one seat
 	  bzero(buffer, 1024);
 	  recv(sock, buffer, sizeof(buffer), 0);
 	  printf("Server: %s\n", buffer);
-	  
-	  int amt = 0;
-	  recv(sock, &amt, sizeof(int), 0);
-	  printf("%d", amt);
 	  break;
   }
 

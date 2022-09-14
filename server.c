@@ -54,23 +54,22 @@ int main(){
 	    recv(client_sock, &numOfSeats, sizeof(int), 0);
 	    printf("Client: %d\n", numOfSeats);
 
-	    bzero(buffer, 1024);
+	    numOfSeats *= 200;
+		char snum[5];
+		sprintf(snum, "%d", numOfSeats);
+		bzero(buffer, 1024);
 	    strcpy(buffer, "One seat is 200 Rupees. Your total price is: ");
-	    printf("Server: %s\n", buffer);
+	    strcat(buffer, snum);
+		printf("Server: %s\n", buffer);
 	    send(client_sock, buffer, strlen(buffer), 0);
-
-		numOfSeats *= 200;
-		printf("\n%d", numOfSeats);
-		send(client_sock, &numOfSeats, sizeof(int), 0);
-
 
 	    bzero(buffer, 1024);
 	    strcpy(buffer, "Your seats have been purchased. Thanks.");
 	    printf("\nServer: %s\n", buffer);
 	    send(client_sock, buffer, strlen(buffer), 0);
+		close(client_sock);
 		break;	
 	}
-    close(client_sock);
   }
 
   return 0;
