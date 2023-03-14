@@ -1,0 +1,14 @@
+from flask import Flask, request, make_response
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    visits = int(request.cookies.get("visits", 0)) + 1
+    message = "This is your {} visit to this page.".format(visits)
+    resp = make_response(message)
+    resp.set_cookie("visits", str(visits))
+    return resp
+
+if __name__ == "__main__":
+    app.run()
