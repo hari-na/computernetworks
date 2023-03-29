@@ -102,34 +102,41 @@ def XORClassification():
         print(X[i], y[i], nn.forward(X[i]))
 
 def MNIST():
-
+    import keras
+    import numpy as np
+    from PIL import Image
+    
     # Load the MNIST dataset
     (X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()
-
     # Reshape and normalize the input data
     X_train = X_train.reshape(-1, 28 * 28) / 255.0
     X_test = X_test.reshape(-1, 28 * 28) / 255.0
-
     # Convert the output data to one-hot encoding
     y_train = keras.utils.to_categorical(y_train)
     y_test = keras.utils.to_categorical(y_test)
-
     # Define the neural network model
     model = keras.models.Sequential([
         keras.layers.Dense(64, activation='relu', input_shape=(784,)),
         keras.layers.Dense(10, activation='softmax')
     ])
-
     # Compile the model with categorical cross-entropy loss and Adam optimizer
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
     # Train the model on the MNIST data
     model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+    
+    # Load the image and convert it to grayscale
+    image = Image.open('test_image.png').convert('L')
+    # Resize the image to 28x28 pixels
+    image = image.resize((28, 28))
+    # Flatten the image to a 1D array of length 784
+    image_array = np.array(image).reshape(1, 784)
+    # Normalize the pixel values to be between 0 and 1
+    image_array = image_array / 255.0
+    # Pass the flattened and normalized image through the trained neural network and get the predicted class
+    predicted_class = np.argmax(model.predict(image_array))
+    
+    print("Predicted digit:", predicted_class)
 
-    # Evaluate the model on the test data
-    test_loss, test_accuracy = model.evaluate(X_test, y_test)
-    print("Test loss:", test_loss)
-    print("Test accuracy:", test_accuracy)
 
 def SVMMNIST():
     from sklearn.datasets import load_digits
